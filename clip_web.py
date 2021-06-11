@@ -32,7 +32,8 @@ def init_index():
         ids.append(image['image_id'])
     ids=np.array(ids)
     features=np.array(features).squeeze()
-    index.add_items(features,ids)
+    if(len(features)!=0):
+        index.add_items(features,ids)
     print("Index is ready")
        
 def read_img_file(image_data):
@@ -121,7 +122,7 @@ def get_text_features(text):
     with torch.no_grad():
         text_features = model.encode_text(text_tokenized)
         text_features /= text_features.norm(dim=-1, keepdim=True)
-    return text_features
+    return text_features.numpy()
     
 app = FastAPI()
 @app.get("/")
